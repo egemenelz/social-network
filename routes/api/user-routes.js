@@ -1,25 +1,17 @@
 const router = require('express').Router();
-const User = require('../../models/User');
+const {
+    getAllUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser,
+    addFriend,
+    deleteFriend,
+} = require('../../controllers/user-controllers');
 
-router.get('/', (req, res) => {
-    User.find({})
-        .populate({ path: 'toughts' })
-        .populate({ path: 'friends' })
-        .sort({ _id: -1 })
-        .then(dbUserData => res.json(dbUserData))
-        .catch(err => {
-            console.log(err);
-            res.status(400).json(err);
-        });
-});
+router.route('/').get(getAllUsers).post(createUser);
+router.route('/:id').get(getUserById).put(updateUser).delete(deleteUser);
+router.route('/:id/friends/:friendId').post(addFriend).delete(deleteFriend);
 
-router.get('/:id', (req, res) => {
-    User.findOne({ _id: req.params.id })
-        .populate({ path: 'toughts' })
-        .populate({ path: 'friends' })
-        .then(dbUserData => res.json(dbUserData))
-        .catch(err => {
-            console.log(err);
-            res.status(400).json(err);
-        });
-});
+
+module.exports = router;
