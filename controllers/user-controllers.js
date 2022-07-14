@@ -3,6 +3,7 @@ const { User } = require('../models');
 module.exports = {
     getAllUsers(req, res) {
         User.find({})
+
             .select('-__v')
             .sort({ _id: -1 })
             .then(x => res.json(x))
@@ -23,7 +24,7 @@ module.exports = {
             .then(x => res.json(x))
             .catch(err => {
                 res.status(400).json(err);
-            })
+            });
     },
     updateUser({ params, body }, res) {
         User.findOneAndUpdate(
@@ -53,8 +54,7 @@ module.exports = {
             { _id: params.id },
             { $push: { friends: { friendId: params.friendId } } },
             { new: true },
-        )
-            .then(x => res.json(x))
+        ).then(x => res.json(x))
             .catch(err => res.json(err));
     },
     deleteFriend({ params }, res) {
@@ -68,7 +68,6 @@ module.exports = {
                 return;
             }
             res.json({ message: `The user with this ${params.id} has been deleted` })
-        })
-            .catch(err => res.json(err));
+        }).catch(err => res.json(err));
     }
 };

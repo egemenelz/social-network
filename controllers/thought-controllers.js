@@ -74,11 +74,11 @@ module.exports = {
             res.json(x)
         }).catch(err => res.json(err));
     },
-    deleteReaction({ params, body }, res) {
+    deleteReaction({ params }, res) {
         Thought.findOneAndUpdate(
             { _id: params.id },
-            { $pull: { reactions: body.reactionId } },
-            { new: true, runValidators: true },
+            { $pull: { reactions: { reactionId: params.reactionId } } },
+            { new: true },
         ).then(x => {
             console.log(x)
             res.json(x)
