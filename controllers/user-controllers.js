@@ -3,7 +3,6 @@ const { User } = require('../models');
 module.exports = {
     getAllUsers(req, res) {
         User.find({})
-
             .select('-__v')
             .sort({ _id: -1 })
             .then(x => res.json(x))

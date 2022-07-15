@@ -34,7 +34,6 @@ module.exports = {
             .catch(err => res.status(400).json(err));
     },
     createThought({ body }, res) {
-        console.log(body);
         Thought.create(body)
             .then(({ _id }) => {
                 return User.findOneAndUpdate(
