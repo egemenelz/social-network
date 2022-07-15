@@ -3,6 +3,10 @@ const { Thought } = require('../models');
 module.exports = {
     getAllThought(req, res) {
         Thought.find({})
+            .populate({
+                path: 'reactions',
+                select: '-__v'
+            })
             .select('-__v')
             .sort({ _id: -1 })
             .then(x => {
@@ -15,6 +19,10 @@ module.exports = {
     },
     getThoughtById({ params }, res) {
         Thought.findOne({ _id: params.id })
+            .populate({
+                path: 'reactions',
+                select: '-__v'
+            })
             .select('-__v')
             .then(x => {
                 if (!x) {
@@ -26,20 +34,17 @@ module.exports = {
             .catch(err => res.status(400).json(err));
     },
     createThought({ body }, res) {
+        console.log(body);
         Thought.create(body)
             .then(({ _id }) => {
                 return User.findOneAndUpdate(
                     { _id: body.userId },
                     { $push: { thoughts: _id } },
-                    { new: true })
+                    { new: true }
+                );
             })
-            .then(x => {
-                if (!x) {
-                    res.status(404).json({ message: 'No user found with this username' })
-                }
-                res.json(x)
-            })
-            .catch(err => res.status(400).json(err));
+            .then(x => { res.json(x) })
+            .catch(err => res.json(err));
     },
     updateThought({ params, body }, res) {
         Thought.findOneAndUpdate(
