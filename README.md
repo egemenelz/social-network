@@ -1,6 +1,6 @@
 # Social Network
 
-<img src="./images/social-network.gif" alt="Project Image" width="900px"/>
+<img src="./images/social-network.gif" alt="Project Image" width="700px"/>
 
 [For Full Video](https://drive.google.com/file/d/1U-_0fa3hLM9VOnBIlqANQ0mWnAmvU_e0/view)
 
